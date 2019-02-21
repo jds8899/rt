@@ -1,0 +1,64 @@
+
+  Intersect* close = nullptr;
+  GeoObj* winner = nullptr;
+  float d = 1000000;
+  Point p;
+  Vector n;
+  Ray ray;
+  for(auto prim: obj_list_) {
+    if(prim != obj) {
+      Intersect* i = prim->intersect(r);
+      /*if(i != nullptr && (close == nullptr || i->d() < close->d())) {
+        if(close != nullptr) delete close;
+        d = i->d();
+        p = i->p();
+        n = i->n();
+        ray = i->r();
+        close = new Intersect{d,p,n,ray};
+        }*/
+      if(i != nullptr && i->d() < d) {
+        d = i->d();
+        winner = prim;
+      }
+      delete i;
+    }
+  }
+  return (winner != nullptr);
+  if(close == nullptr) return true;
+  Vector lv{r.origin(), l->position()};
+  Vector lvclose{close->p(), l->position()};
+  return (close->d() < 0 || lv.length() < lvclose.length());
+
+  bool ret = true;
+  for(auto prim : obj_list_) {
+    if(prim != obj) {
+      Intersect* i = prim->intersect(r);
+      if(i != nullptr) ret = false;
+    }
+  }
+  return ret;
+
+  Intersect* close = nullptr;
+  GeoObj* winner = nullptr;
+  float d;
+  Point p;
+  Vector n;
+  Ray ray;
+  for(auto prim: obj_list_) {
+    if(prim != obj) {
+      Intersect* i = prim->intersect(r);
+      if(i != nullptr && (close == nullptr || i->d() < close->d())) {
+        if(close != nullptr) delete close;
+        d = i->d();
+        p = i->p();
+        n = i->n();
+        ray = i->r();
+        close = new Intersect{d,p,n,ray};
+        }
+      delete i;
+    }
+  }
+  if(close == nullptr) return true;
+  Vector lv{r.origin(), l->position()};
+  Vector lvclose{close->p(), l->position()};
+  return (close->d() < 0 || lv.length() < lvclose.length());
